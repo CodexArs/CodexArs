@@ -7,6 +7,7 @@ app_name="hotels"
 
 urlpatterns = [
     path("", views.home, name="hotels"),
+    path("search-hotels/", views.hotelpartner, name="search-hotels")
    
 ]
 
