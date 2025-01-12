@@ -1,0 +1,11 @@
+{% extends "navbar/nav.html" %}
+
+{% block body %}
+
+    {% for hotelinlocation in hotel %} 
+            <h2 class="name">Name: {{hotel.HOTSTNAME}}</h2>
+            <h2 class="location">LOCATION: {{ hotel.LOCATION}} </h2>
+            
+       {% endfor %}
+
+{% endblock %} 

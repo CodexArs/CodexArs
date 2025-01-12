@@ -2,41 +2,45 @@
 
 {% block body %}
 
-<h1>Test</h1>
 
-<script src=   
-"https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">   
-    </script>   
-    
-    <script src=   
-"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">   
-    </script>   
+<script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css" />
 
-<script> 
-    $( function() { 
-      var availableTags = [ 
-          {% for hotelsuggest in hotelsuggestion %} 
-              "{{hotelsuggest.HOTELNAME}}", 
-          {% endfor %} 
+<div id="autocomplete" class="autocomplete">
+    <input class="autocomplete-input" />
+    <ul class="autocomplete-result-list"></ul>
+    <!--<button onclick="hotelSearch()">Search</button> -->
+</div>
 
-          {% for hotelsuggest in hotelsuggestion %} 
-              "{{hotelsuggest.LOCATION}}", 
-          {% endfor %} 
-      ]; 
-      $( "#search-suggest" ).autocomplete({ 
-        source: availableTags  
-      }); 
-    } ); 
-    </script> 
-
-<div>
+<!-- <div>
     <form class="form-inline my-2 my-lg-0" method=POST action="{% url 'hotels:search-hotels' %}">
         {% csrf_token %}
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" name="searchhotel" id=search-suggest aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <input class="autocomplete-input" type="search" placeholder="Search" name="searchhotel" id=search-suggest aria-label="Search">
+        <ul class="autocomplete-result-list"></ul>
+        <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
     </div>
     
-</div>
+</div> -->
 
-{% endblock %}  
+<script>
+    new Autocomplete('#autocomplete', {
+        search: input => {
+            console.log(input)
+            const URL = `search-hotels/?name=${input}`
+            return new Promise(resolve => {
+                fetch(URL).then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        resolve(data.data)
+                    })
+            })
+        },
+        onSubmit: result => {
+            window.open(`list/${result}`)
+        }
+    })
+
+</script>
+
+{% endblock %}
