@@ -4,4 +4,39 @@
 
 <h1>Test</h1>
 
+<script src=   
+"https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">   
+    </script>   
+    
+    <script src=   
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">   
+    </script>   
+
+<script> 
+    $( function() { 
+      var availableTags = [ 
+          {% for hotelsuggest in hotelsuggestion %} 
+              "{{hotelsuggest.HOTELNAME}}", 
+          {% endfor %} 
+
+          {% for hotelsuggest in hotelsuggestion %} 
+              "{{hotelsuggest.LOCATION}}", 
+          {% endfor %} 
+      ]; 
+      $( "#search-suggest" ).autocomplete({ 
+        source: availableTags  
+      }); 
+    } ); 
+    </script> 
+
+<div>
+    <form class="form-inline my-2 my-lg-0" method=POST action="{% url 'hotels:search-hotels' %}">
+        {% csrf_token %}
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" name="searchhotel" id=search-suggest aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+    
+</div>
+
 {% endblock %}  

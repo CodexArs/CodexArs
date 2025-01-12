@@ -7,7 +7,7 @@ app_name="navbar"
 
 urlpatterns = [
     path("", views.navbar, name="navbar"),
-    path("search/", views.hotelpartner, name="search-hotels")
+    # path("search/", views.hotelpartner, name="search-hotels")
    
 ]
 
