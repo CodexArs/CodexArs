@@ -2,10 +2,59 @@
 
 {% block body %}
 
-    {% for hotelinlocation in hotel %} 
-            <h2 class="name">Name: {{hotel.HOTSTNAME}}</h2>
-            <h2 class="location">LOCATION: {{ hotel.LOCATION}} </h2>
-            
-       {% endfor %}
+<style>
+    .filter {
+        float: left;
+        width: 20%;
+        background-color: antiquewhite;
+    }
 
-{% endblock %} 
+    .hotellist:hover {
+        background-color: antiquewhite;
+    }
+
+    .row {
+        display: flex;
+    }
+
+    .column {
+        flex: 50%;
+    }
+</style>
+
+<div class="search">
+    <div class="container">
+        <h3>serach</h3>
+    </div>
+</div>
+
+
+<div class="filter">
+    <div class="container">
+        <h3>name</h3>
+    </div>
+</div>
+
+<div class="container">
+    {% for hotellistlocation in name %}
+    <div class="hotellist">
+        <div class="row">
+            <div class="column">
+                <img src="#" alt="img" width="200" height="100">
+            </div>
+            <div class="column">
+                
+                <h2 class="name">{{hotellistlocation.name}}</h2>
+                <h2 class="name">{{hotellistlocation.location}}</h2>
+
+                <!-- <h2 class="location">LOCATION: {{ location.0 }} </h2> -->
+                <!-- <h2 class="name">{{hotelinlocation}}</h2>
+                <h2 class="location">LOCATION: {{ hotel}} </h2> -->
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
