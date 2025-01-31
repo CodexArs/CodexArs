@@ -6,46 +6,50 @@ from django.template import loader
 
 # Create your views here.
 
-from .models import HotelPartnerList
+from .models import HotelPartnerList, HotelCities
 
+# home page of hotel booking 
 def home(request):
-    # return render(request, 'navbar/nav.html')
     hotelsuggestion = HotelPartnerList.objects.all()  
-    return render(request, 'hotels/home.html' , { 'hotelsuggestion':hotelsuggestion })  
+    return render(request, 'hotels/home.html' )  
     
-def hotelpartner(request):
-    if request.method == "POST":
-        searchhotel = request.POST ['searchhotel']
-        hotels  = HotelPartnerList.objects.filter(HOTELNAME__icontains=searchhotel ) | HotelPartnerList.objects.filter(LOCATION__icontains=searchhotel )
-        return render(request, 'navbar/search-hotels.html', { 'searchhotel':searchhotel, 'hotels':hotels })
-    else :
-        return render(request, 'navbar/search-hotels.html', { } )
+# def hotelpartner(request):
+#     if request.method == "POST":
+#         searchhotel = request.POST ['searchhotel']
+#         hotels  = HotelPartnerList.objects.filter(HOTELNAME__icontains=searchhotel ) | HotelPartnerList.objects.filter(LOCATION__icontains=searchhotel )
+#         return render(request, 'navbar/search-hotels.html', { 'searchhotel':searchhotel, 'hotels':hotels })
+#     else :
+#         return render(request, 'navbar/search-hotels.html', { } )
     
 def view_hotels(request):
     data = serializers.serialize('json', HotelPartnerList.objects.all())
     return HttpResponse(data, content_type='application/json')
     
-
+# search hotels based on the locations 
 def searchhotel(request):
     name = request.GET.get('name')
     hotellist = []
     if name:
-        hotels =  HotelPartnerList.objects.filter(LOCATION__icontains=name)
+        hotels =  HotelCities.objects.filter(CITY__icontains=name)
         for hotel in hotels:
-            hotellist.append((hotel.LOCATION))
+            hotellist.append((hotel.CITY))
     return JsonResponse({'status':200, 'data': hotellist})
 
-def search(request):
-    return render(request, 'hotels/search-hotel.html')
 
+# get the list of hotels in the locations 
 def hotel_location(request,name):
-    hotels =  HotelPartnerList.objects.filter(LOCATION__icontains=name)
+    hotels =  HotelPartnerList.objects.filter(CITY__icontains=name)
+    name = []
+    for hotel in hotels:
+        name.append({ 'name' : hotel.HOTELNAME,
+                      'location': hotel.LOCATION
+                    })
     if not hotels:
         template = loader.get_template('hotels/error.html')
     else:
         template = loader.get_template('hotels/hotel-location.html')
-    context = {
-        'hotel': hotels,
+    context = { 
+        'name' : name 
     }
     return HttpResponse(template.render(context, request))
 
